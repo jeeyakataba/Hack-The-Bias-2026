@@ -185,7 +185,7 @@
         ];
 
         function renderStats(data) {
-            const tableBody = document.getElementById("statsTable");   //Target
+            const body = document.getElementById("statsTable");   //Target
             body.innerHTML = data.map(i => `
                 <tr>
                     <td>${i.topic}</td>
