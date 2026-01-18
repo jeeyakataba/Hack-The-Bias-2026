@@ -12,10 +12,63 @@
             --primary-color: #321856;
         }
 
-        nav { margin-bottom: 2rem; }
-        nav ul:last-child { justify-content: flex-end; }
+        .menu-icon {
+            font-size: 2rem;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: white;
+            border-radius: 8px;
+            padding: 5px 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
 
-        .impact-text {
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(50, 24, 86, 0.75);
+            display: none;
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-overlay text {
+            color: white;
+            font-size: 1.5rem;
+            margin: 15px 0;
+            text-decoration: none;
+        }
+
+        /*nav { margin-bottom: 2rem; }*/
+        /*nav ul:last-child { justify-content: flex-end; }*/
+
+        section { display: none; padding: 40px 0;}
+        section.active {display: block;}
+
+        .symptom-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .result-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: #C9AFE4;
+            border-left: 5px solid var(--primary-color);
+            margin-top: 1rem;
+            color: #321856
+        }
+
+       /* .impact-text {
             font-size: 0.85rem;
             color: #555;
             display: block;
@@ -35,42 +88,47 @@
             border-radius: 8px;
             padding: 60px 40px;
             margin-bottom: 40px;
-        }
+        }*/
 
         .result-box {
             padding: 1.5rem;
             border-radius: 8px;
             background-color: #C9AFE4;
-            border-left: 5px solid var(--primary);
+            border-left: 5px solid var(--primary-color);
             margin-top: 1rem;
+            color: #321856;
         }
+        
+        .hidden { display: none; }
 
         </style>
 </head>
 <body>
+    <div class = "menu-icon" onclick = "toggleMenu()">☰</div>
+    <div class = "menu-overlay" id="menuOverlay">
+        <a href="#" onclick=" showSection('home')">Home</a>
+        <a href="#" onclick=" showSection('stats')">Inclusivity Stats</a>
+        <a href="#" onclick=" showSection('tracker')">Inclusivity Tracker</a>
+        <a href="#" onclick=" showSection('DX')">Diagnostic Tool</a>
+        <a href="#" onclick=" showSection('silence')">The Silence Gallery</a>
+        <a href="#" onclick=" showSection('future')">Future Plans</a>
+        <a href = "#" onclick="toggleMenu()" style = "font-size: 1rem; color: #ccc;">Close Menu ✕</a>
+    </div>
+    
+    
     <header class = "container">
         <nav>
             <ul>
-                <li><strong>🩺 MediBias</strong></li>
-            </ul>
-
-            <ul>
-                <li><a href="#" onclick = "showSection('home')">Home</a></li>
-                <li><a href="#" onclick = "showSection('stats')">Inclusivity Stats</a></li>
-                <li><a href="#" onclick = "showSection('tracker')">Inclusivity Tracker</a></li> 
-                <li><a href="#" onclick = "showSection('DX')">Diagnostic Tool</a></li>
-                <li><a href="#" onclick = "showSection('silence')">The Silence Gallery</a></li>
-                <li><a href="#" onclick = "showSection('future')">Future Plans</a></li>
+                <li><strong style = "font-size: 2.2rem; color: #321856">🩺 MediBias</strong></li>
             </ul>
         </nav>
     </header>
 
     <main class = "container">
         <section id="home" class = "active">
-            <hgroup>
-                <h1>Eliminating Systemic Bias in Medical Research and Practice</h1>
-                <h2>Why our mission matters for healthcare equality </h2>
-            </hgroup>
+            <h1>Eliminating Systemic Bias in Medical Research and Practice</h1>
+            <h2>Why our mission matters for healthcare equality </h2>
+            
             <p>
                 Systemic bias in medical research and practice has long been a barrier to equitable healthcare. 
                 Underrepresentation of certain demographics in clinical trials, biased diagnostic tools, and 
@@ -84,13 +142,13 @@
             <p>Search our database of recent research data to see female representation levels.</p>
             <input type="Search" id="statSearch" name = "Search"placeholder="Search by drug or condition...">
             <figure>
-                <table role = "grid">
+                <table>
                     <thead>
                         <tr>
-                            <th scope = "col"> Research Topic & Impact</th>
-                            <th scope = "col"> Women (%)</th>
-                            <th scope = "col"> Age Range</th>
-                            <th scope = "col"> Sex-Specific Dose</th>
+                            <th>Research Topic & Impact</th>
+                            <th>Women (%)</th>
+                            <th>Age Range</th>
+                            <th>Sex-Specific Dose</th>
                         </tr>   
                     </thead>
                     <tbody id = "statsTable">
@@ -105,13 +163,13 @@
             <form id="graderForm">
                 <label>Research Area<input type = "text" placeholder = "e.g. ADHD"></label>
                 <div class = "grid">
-                    <label>Men in Study<input type = "number" id = "menCount" value = "0"></label>
-                    <label>Women in Study<input type = "number" id = "womenCount" value = "0"></label>
+                    <label>Men in Study<input type = "number" id = "menCount" value = "0" min="0"></label>
+                    <label>Women in Study<input type = "number" id = "womenCount" value = "0" min="0"></label>
                 </div>
                 <label><input type = "checkbox" id = "g1"> Considered sex-specific biological measures (Hormones, cycles, pregnancy)</label>
                 <label><input type = "checkbox" id = "g2"> Sex-specific dosing or dose analysis conducted</label>
                 <label><input type = "checkbox" id = "g3"> Used sex-specific diagnostic criteria or subgroup analysis</label>
-                <button type = "button" onclick = "calculateGrade()">Calculate Inclusivity Grade</button>
+                <button type = "button" onclick = "calculateInclusivityGrade()">Calculate Inclusivity Grade</button>
             </form>
             <div id = "GradeOutput"></div>
             </section>
@@ -119,24 +177,123 @@
         <section id="DX">
             <h2>Clinical Diagnostic Tool</h2>
             <p>For Doctors: Use this diagnostic tool to refine the diagnosis process for suspected conditions.</p>
-            <article>
-                <form id = "dxForm">
-                    <label>Primary Symptoms Noticed <textarea placeholder = "e.g. bloating, cramping..."></textarea></label>
-                    <button type="button" onclick="generateDxQuestions()">Analyze Patient Symptoms</button>
-                </form>
-                <div id="dxQuestions" style="display:none;">
-                    <hr>
-                    <h5>Follow-up Diagnostic Questions:</h5>
-                    <ul>
-                        <li>On a scale of 1-10, how debilitating are the menstrual cramps?</li>
-                        <li>On a scale of 1-10, how heavy is the bleeding (clotting/duration)?</li>
-                        <li>Are secondary symptoms present, such as chronic migraines or lower back pain?</li>
-                        <li>How regular is the menstrual cycle, and does pain persist outside of the period?</li>
-                        <li>Does the patient experience pain during bowel movements or intercourse?</li>
-                    </ul>
-                    <small><i>Note: These questions target common signs of Endometriosis often dismissed as "normal" period pain.</i></small>
+            <div class = "symptom-grid">
+                <label><input type = "checkbox"> Pelvic Pain </label>
+                <label><input type = "checkbox"> Bloating </label>
+                <label><input type = "checkbox"> Fainting </label>
+                <label><input type = "checkbox"> Vomiting </label>
+                <label><input type = "checkbox"> Back Pain </label>
+                <label><input type = "checkbox"> Digestive issues </label>
+                <label><input type = "checkbox"> Fatigue </label>
+                <label><input type = "checkbox"> Emotional changes </label>
+                <label><input type = "checkbox"> Leg pain </label>
+            </div>    
+
+            <button onclick = "showFollowUp()">Submit Assessment</button>
+
+            <div id = "followUpSection" class = "hidden">
+                <h3>Follow-Up Questions</h3>
+                <hr>
+                <label>Is your daily routine/work/school disrupted due to period pain?
+                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </label>
+                <div id="routine" class="hidden">
+                    <article>
+                        <ul>
+                            <li>Were you diagnosed with anxiety or depression before this pain was investigated?</li>
+                        </ul>
+                    </article>
                 </div>
-            </article>
+
+
+                <label>Do you experience pain with bowel movements during menstruation?
+                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </label>
+                <div id="bowel" class="hidden">
+                    <article>
+                        <ul>
+                            <li>Have you been diagnosed with IBS without proper imaging or laparoscopy?</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <label>Pain with urination during menstruation?
+                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </label>
+                <div id="urinary" class="hidden">
+                    <article>
+                        <ul>
+                            <li>Recurrent UTI symptoms with negative cultures?</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <label>Do you have any known family history of endometriosis/severe period pain?
+                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </label>
+                <div id="familyHistory" class="hidden">
+                    <article>
+                        <ul>
+                            <li>Is there any history in your family related to hysterectomy?</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <label>When exactly did you experience pain before, after or between periods?
+                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </label>
+                <div id="periods" class="hidden">
+                    <article>
+                        <ul>
+                            <li>Does the pain flare predictably or unpredictably at certain points in your cycle?</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <label>Have you experienced pain during or after sexual intercourse?
+                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </label>
+                <div id="intercourse" class="hidden">
+                    <article>
+                        <ul>
+                            <li>Is the pain deep, sharp or lingering?</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <label>Have you attempted to concieve for over 6 to 12 months?
+                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </label>
+                <div id="miscarriage" class="hidden">
+                    <article>
+                        <ul>
+                            <li>Any miscarriages or incidents of infertility?</li>
+                        </ul>
+                    </article>
+                </div>
+
+            </div>
         </section>
 
         <section id="silence">
@@ -170,11 +327,20 @@
             </ul>
         </section>
     </main>
+
     <script>
+        // Menu Toggle Logic
+        function toggleMenu() {
+            const overlay = document.getElementById('menuOverlay');
+            overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+
         // Section Navigation Logic
         function showSection(Id) {
             document.querySelectorAll('selection').forEach(s => s.classList.remove('active'));
             document.getElementById(Id).classList.add('active');
+            toggleMenu();    // Close menu after selection
         }
 
         // Stats Logic
