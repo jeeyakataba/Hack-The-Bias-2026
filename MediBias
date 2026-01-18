@@ -26,28 +26,25 @@
         }
 
         .menu-overlay {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(50, 24, 86, 0.75);
-            display: none;
             z-index: 1000;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
         }
 
-        .menu-overlay text {
+        .menu-overlay a {
             color: white;
             font-size: 1.5rem;
             margin: 15px 0;
             text-decoration: none;
         }
-
-        /*nav { margin-bottom: 2rem; }*/
-        /*nav ul:last-child { justify-content: flex-end; }*/
 
         section { display: none; padding: 40px 0;}
         section.active {display: block;}
@@ -68,37 +65,6 @@
             color: #321856
         }
 
-       /* .impact-text {
-            font-size: 0.85rem;
-            color: #555;
-            display: block;
-            margin-top: 5px;
-        }
-
-        .grade-a { color: #2ecc71; font-weight: bold; }
-        .grade-c { color: #f39c12; font-weight: bold; }
-        .grade-f { color: #e74c3c; font-weight: bold; }
-
-        section {
-            padding : 40px 0;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #C9AFE4 0%, #ffffff 100%);
-            border-radius: 8px;
-            padding: 60px 40px;
-            margin-bottom: 40px;
-        }*/
-
-        .result-box {
-            padding: 1.5rem;
-            border-radius: 8px;
-            background-color: #C9AFE4;
-            border-left: 5px solid var(--primary-color);
-            margin-top: 1rem;
-            color: #321856;
-        }
-        
         .hidden { display: none; }
 
         </style>
@@ -127,20 +93,37 @@
     <main class = "container">
         <section id="home" class = "active">
             <h1>Eliminating Systemic Bias in Medical Research and Practice</h1>
+            <p> </p>
             <h2>Why our mission matters for healthcare equality </h2>
             
             <p>
-                Systemic bias in medical research and practice has long been a barrier to equitable healthcare. 
-                Underrepresentation of certain demographics in clinical trials, biased diagnostic tools, and 
-                unequal access to treatments contribute to disparities in health outcomes. At MediBias, we are 
-                dedicated to identifying these biases and promoting inclusivity in medical research and practice.
+                Systematic bias in healthcare is not accidental. It is rooted in how pain is normalized, documented and silenced.
+            </p>
+
+            <h3>The Problem</h3>
+            <p>For decades, women’s symptoms have been minimized within medical systems designed around male-dominated clinical trials. 
+                These dangerous gaps have directly affected how we understand female biology, hormones and formulate drugs. 
+                The impact is mainly visible in endometriosis; a condition affecting 1 in 10 women, taking an average of 7-10 years to diagnose, a result of overlooking clinical patterns.
+            </p>
+
+            <h3>The Gap</h3>
+            <p>Endometriosis is not missed because the symptoms are absent, but because the right questions are never asked. 
+                Women undergo unnecessary psychiatric treatment, opioid dependency, fertility loss and birth control side effects. 
+                The late diagnosis, escalation and damage is all due to lack of listening and in-depth person specific analysis.
+            </p>
+
+            <h3>Our Solution: MediBias</h3>
+            <p>MediBias exists to expose these gaps, providing data-driven tools for researchers, patients and healthcare professionals. 
+                It analyzes clinical notes, flags for missing follow-up questions and prevents a misdiagnosis. 
+                It does not replace clinical judgement, but strengthens by asking the critical questions.
+                This tool does not diagnose. It listens for silence. 
             </p>
         </section>
 
         <section id="stats">
             <h2>Medical Research Inclusivity Statistics</h2>
             <p>Search our database of recent research data to see female representation levels.</p>
-            <input type="Search" id="statSearch" name = "Search"placeholder="Search by drug or condition...">
+            <input type="Search" id="statSearch" placeholder="Search by drug or condition..." oninput = "filterStats()">
             <figure>
                 <table>
                     <thead>
@@ -148,7 +131,6 @@
                             <th>Research Topic & Impact</th>
                             <th>Women (%)</th>
                             <th>Age Range</th>
-                            <th>Sex-Specific Dose</th>
                         </tr>   
                     </thead>
                     <tbody id = "statsTable">
@@ -171,7 +153,7 @@
                 <label><input type = "checkbox" id = "g3"> Used sex-specific diagnostic criteria or subgroup analysis</label>
                 <button type = "button" onclick = "calculateInclusivityGrade()">Calculate Inclusivity Grade</button>
             </form>
-            <div id = "GradeOutput"></div>
+            <div id = "gradeOutput"></div>
             </section>
 
         <section id="DX">
@@ -191,13 +173,13 @@
 
             <button onclick = "showFollowUp()">Submit Assessment</button>
 
+            <h3>Follow-Up Questions</h3>
             <div id = "followUpSection" class = "hidden">
-                <h3>Follow-Up Questions</h3>
                 <hr>
                 <label>Is your daily routine/work/school disrupted due to period pain?
-                    <select id="activeStatus" onchange="toggleHealth()">
-                        <option>Yes</option>
-                        <option>No</option>
+                    <select id="activeStatus" onchange="toggleHealth1()">
+                        <option value = "no">No</option>
+                        <option value = "yes">Yes</option>
                     </select>
                 </label>
                 <div id="routine" class="hidden">
@@ -210,9 +192,9 @@
 
 
                 <label>Do you experience pain with bowel movements during menstruation?
-                    <select id="activeStatus" onchange="toggleHealth()">
-                        <option>Yes</option>
-                        <option>No</option>
+                    <select id="activeStatus" onchange="toggleHealth2()">
+                        <option value = "no">No</option>
+                        <option value = "yes">Yes</option>
                     </select>
                 </label>
                 <div id="bowel" class="hidden">
@@ -224,9 +206,9 @@
                 </div>
 
                 <label>Pain with urination during menstruation?
-                    <select id="activeStatus" onchange="toggleHealth()">
-                        <option>Yes</option>
-                        <option>No</option>
+                    <select id="activeStatus" onchange="toggleHealth3()">
+                        <option value = "no">No</option>
+                        <option value = "yes">Yes</option>
                     </select>
                 </label>
                 <div id="urinary" class="hidden">
@@ -238,9 +220,9 @@
                 </div>
 
                 <label>Do you have any known family history of endometriosis/severe period pain?
-                    <select id="activeStatus" onchange="toggleHealth()">
-                        <option>Yes</option>
-                        <option>No</option>
+                    <select id="activeStatus" onchange="toggleHealth4()">
+                        <option value = "no">No</option>
+                        <option value = "yes">Yes</option>
                     </select>
                 </label>
                 <div id="familyHistory" class="hidden">
@@ -252,9 +234,9 @@
                 </div>
 
                 <label>When exactly did you experience pain before, after or between periods?
-                    <select id="activeStatus" onchange="toggleHealth()">
-                        <option>Yes</option>
-                        <option>No</option>
+                    <select id="activeStatus" onchange="toggleHealth5()">
+                        <option value = "no">No</option>
+                        <option value = "yes">Yes</option>
                     </select>
                 </label>
                 <div id="periods" class="hidden">
@@ -266,9 +248,9 @@
                 </div>
 
                 <label>Have you experienced pain during or after sexual intercourse?
-                    <select id="activeStatus" onchange="toggleHealth()">
-                        <option>Yes</option>
-                        <option>No</option>
+                    <select id="activeStatus" onchange="toggleHealth6()">
+                        <option value = "no">No</option>
+                        <option value = "yes">Yes</option>
                     </select>
                 </label>
                 <div id="intercourse" class="hidden">
@@ -280,9 +262,9 @@
                 </div>
 
                 <label>Have you attempted to concieve for over 6 to 12 months?
-                    <select id="activeStatus" onchange="toggleHealth()">
-                        <option>Yes</option>
-                        <option>No</option>
+                    <select id="activeStatus" onchange="toggleHealth7()">
+                        <option value = "no">No</option>
+                        <option value = "yes">Yes</option>
                     </select>
                 </label>
                 <div id="miscarriage" class="hidden">
@@ -337,47 +319,82 @@
 
 
         // Section Switcher
-        function showSection(Id) {
-            document.querySelectorAll('selection').forEach(s => s.classList.remove('active'));
-            document.getElementById(Id).classList.add('active');
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
             toggleMenu();    // Close menu after selection
         }
 
         //Diagnostic Logic
+
+        function toggleHealth1() {
+            const status = document.getElementById('activeStatus').value;
+            document.getElementById('routine').className = (status === 'yes') ? '' : 'hidden';
+        }
+
+        function toggleHealth2() {
+            const status = document.getElementById('activeStatus').value;
+            document.getElementById('bowel').className = (status === 'yes') ? '' : 'hidden';
+        }
+
+        function toggleHealth3() {
+            const status = document.getElementById('activeStatus').value;
+            document.getElementById('urinary').className = (status === 'yes') ? '' : 'hidden';
+        }
+
+        function toggleHealth4() {
+            const status = document.getElementById('activeStatus').value;
+            document.getElementById('familyHistory').className = (status === 'yes') ? '' : 'hidden';
+        }
+
+        function toggleHealth5() {
+            const status = document.getElementById('activeStatus').value;
+            document.getElementById('periods').className = (status === 'yes') ? '' : 'hidden';
+        }
+
+        function toggleHealth6() {
+            const status = document.getElementById('activeStatus').value;
+            document.getElementById('intercourse').className = (status === 'yes') ? '' : 'hidden';
+        }
+
+        function toggleHealth7() {
+            const status = document.getElementById('activeStatus').value;
+            document.getElementById('miscarriage').className = (status === 'yes') ? '' : 'hidden';
+        }
+
         function showFollowUp() {
             document.getElementById('followUpSection').className;
         }
 
-        function toggleHealth() {
-            const status = document.getElementById('activeStatus').value;
-            document.getElementById('sexualHealthQuestions').className = (status === 'Yes') ? '' : 'hidden';
-        }
+        
 
         // Stats Logic
         const statsData = [
-            { topic: "Heart Disease", women: "34%", race: "Moderate", hormone: "Rarely" },
-            { topic: "Ambien", women: "40%", race: "Low", hormone: "No" },
-            { topic: "ADHD", women: "21%", race: "Low", hormone: "No" }
+            { topic: "COVID-19 Vaccine", women: "50.4", age: "18+"},
+            { topic: "Ischemic Heart Disease", women: "35.37%", age: "20-64"},
+            { topic: "Stage 2 Hypertension", women: "45.4%", age: "20-79"},
+            { topic: "ADHD", women: "33.24%", age: "0-18"},
+            { topic: "Epilepsy", women: "49.74%", age: "20-64"}
         ];
 
+        function filterStats() {
+            const val = document.getElementById('statSearch').value.toLowerCase();
+            const filtered = statsData.filter(item => item.topic.toLowerCase().includes(val));      
+            renderStats(filtered);
+        }
+        
         function renderStats(data) {
             const body = document.getElementById("statsTable");   //Target
             body.innerHTML = data.map(i => `
                 <tr>
                     <td>${i.topic}</td>
                     <td>${i.women}</td>
-                    <td>${i.race}</td>
-                    <td>${i.hormone}</td>
+                    <td>${i.age}</td>
                 </tr>
             `).join('');
         }
 
-        function filterStats() {
-            const val = document.getElementById('statSearch').value.toLowerCase();
-            const filtered = statsData.filter(i => i.topic.toLowerCase().includes(val));      
-            renderStats(filtered);
-        }
-
+        
         //Grader Logic
         function calculateInclusivityGrade() {
             let score = 0;
