@@ -195,7 +195,7 @@
                 <h3>Follow-Up Questions</h3>
                 <hr>
                 <label>Is your daily routine/work/school disrupted due to period pain?
-                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                    <select id="activeStatus" onchange="toggleHealth()">
                         <option>Yes</option>
                         <option>No</option>
                     </select>
@@ -210,7 +210,7 @@
 
 
                 <label>Do you experience pain with bowel movements during menstruation?
-                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                    <select id="activeStatus" onchange="toggleHealth()">
                         <option>Yes</option>
                         <option>No</option>
                     </select>
@@ -224,7 +224,7 @@
                 </div>
 
                 <label>Pain with urination during menstruation?
-                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                    <select id="activeStatus" onchange="toggleHealth()">
                         <option>Yes</option>
                         <option>No</option>
                     </select>
@@ -238,7 +238,7 @@
                 </div>
 
                 <label>Do you have any known family history of endometriosis/severe period pain?
-                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                    <select id="activeStatus" onchange="toggleHealth()">
                         <option>Yes</option>
                         <option>No</option>
                     </select>
@@ -252,7 +252,7 @@
                 </div>
 
                 <label>When exactly did you experience pain before, after or between periods?
-                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                    <select id="activeStatus" onchange="toggleHealth()">
                         <option>Yes</option>
                         <option>No</option>
                     </select>
@@ -266,7 +266,7 @@
                 </div>
 
                 <label>Have you experienced pain during or after sexual intercourse?
-                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                    <select id="activeStatus" onchange="toggleHealth()">
                         <option>Yes</option>
                         <option>No</option>
                     </select>
@@ -280,7 +280,7 @@
                 </div>
 
                 <label>Have you attempted to concieve for over 6 to 12 months?
-                    <select id="activeStatus" onchange="toggleSexualHealth()">
+                    <select id="activeStatus" onchange="toggleHealth()">
                         <option>Yes</option>
                         <option>No</option>
                     </select>
@@ -336,11 +336,21 @@
         }
 
 
-        // Section Navigation Logic
+        // Section Switcher
         function showSection(Id) {
             document.querySelectorAll('selection').forEach(s => s.classList.remove('active'));
             document.getElementById(Id).classList.add('active');
             toggleMenu();    // Close menu after selection
+        }
+
+        //Diagnostic Logic
+        function showFollowUp() {
+            document.getElementById('followUpSection').className;
+        }
+
+        function toggleHealth() {
+            const status = document.getElementById('activeStatus').value;
+            document.getElementById('sexualHealthQuestions').className = (status === 'Yes') ? '' : 'hidden';
         }
 
         // Stats Logic
@@ -362,6 +372,12 @@
             `).join('');
         }
 
+        function filterStats() {
+            const val = document.getElementById('statSearch').value.toLowerCase();
+            const filtered = statsData.filter(i => i.topic.toLowerCase().includes(val));      
+            renderStats(filtered);
+        }
+
         //Grader Logic
         function calculateInclusivityGrade() {
             let score = 0;
@@ -375,11 +391,6 @@
 
             let grade = score > 95 ? 'A+' : score > 90 ? 'A' : score > 85 ? 'A-' : score > 80 ? 'B+' : score > 75 ? 'B' : score > 70 ? 'B-' : score > 65 ? 'C+' : score > 60 ? 'C' : score > 55 ? 'C-' : score > 50 ? 'D+' : score > 45 ? 'D' : score > 40 ? 'D-' : 'F';
             document.getElementById('gradeOutput').innerHTML = `<div class="result-box"><h3>Grade: ${grade}</h3><p>Inclusivity Score: ${Math.round(score)}/100</p></div>`;
-        }
-
-        // DX Logic
-        function generateDxQuestions() {
-            document.getElementById('dxQuestions').style.display = 'block';
         }
 
         // Initial Load
